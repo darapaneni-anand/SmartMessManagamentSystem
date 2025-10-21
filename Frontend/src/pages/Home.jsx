@@ -1,34 +1,29 @@
-import React,{useEffect,useState} from "react";
-import MealCard from "../components/MealCard"
-import axios from "axios"
+// src/pages/Home.js
+import React, { useEffect, useState } from "react";
+import MealCard from "../components/MealCard";
+import axios from "axios";
 
-const Home =() =>
-{
-    const[meals,setMeals] = useState([]);
-    useEffect(()=>
-    {
-        const fetchMeals = async ()=>
-        {
-            const res = await axios.get("https://loclhost:5000/api/meals");
-            setMeals(res.data)
-        };
-        fetchMeals();
-    },[]);
+const Home = () => {
+  const [meals, setMeals] = useState([]);
 
-return (
+  useEffect(() => {
+    const fetchMeals = async () => {
+      const res = await axios.get("http://localhost:5000/api/meals");
+      setMeals(res.data);
+    };
+    fetchMeals();
+  }, []);
 
-<div>
-    <h1>Mess Meals</h1>
+  return (
     <div>
-        {meals.map((meal)=>
-        (
-            <MealCard key={meal._id} meal ={meal}/>
+      <h1>Mess Meals</h1>
+      <div className="meal-list">
+        {meals.map((meal) => (
+          <MealCard key={meal._id} meal={meal} />
         ))}
+      </div>
     </div>
-</div>
-);
-}
+  );
+};
 
 export default Home;
-
-  
