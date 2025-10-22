@@ -1,4 +1,4 @@
-import mongoose from "mogoose"
+import mongoose from "mongoose"
 const feedbackSchema = new mongoose.Schema({
     mealId:{type:mongoose.Schema.Types.ObjectId,ref:"Meal"},
     rating: Number,

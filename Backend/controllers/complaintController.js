@@ -32,15 +32,16 @@ export const updateComplaintStatus = async(req,res)=>
 {
     try{
         const{status} = req.body;
-        const complaint = await Compliant.findByIdAndUpdate(
+        const complaint = await Complaint.findByIdAndUpdate(
             req.params.id,
-            {status},
-            {new:true}
-        );  
+            { status },
+            { new: true }
+        );
+        if (!complaint) return res.status(404).json({ message: 'Complaint not found' });
         res.json(complaint);
     }
     catch(error)
     {
-        res.status(500).json({message:mesage.error})
+        res.status(500).json({ message: error.message });
     }
 }
