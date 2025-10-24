@@ -20,7 +20,24 @@ export const addFeedback = async (req, res) => {
       return res.status(404).json({ message: "Meal not found" });
     }
 
-    const feedback = new Feedback({ mealId, rating, comment });
+    // Check if user has already given feedback for this meal
+    const existingFeedback = await Feedback.findOne({
+      user: req.user._id,
+      mealId: mealId
+    });
+
+    if (existingFeedback) {
+      return res.status(400).json({ 
+        message: "You have already provided feedback for this meal" 
+      });
+    }
+
+    const feedback = new Feedback({
+      user: req.user._id,
+      mealId,
+      rating,
+      comment
+    });
     await feedback.save();
 
     const allFeedback = await Feedback.find({ mealId });

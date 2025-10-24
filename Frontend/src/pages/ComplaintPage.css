@@ -43,10 +43,35 @@
   padding: 12px;
   margin-top: 15px;
   background-color: var(--accent-color);
+  transition: all 0.3s ease;
 }
 
-.complaint-form button:hover {
+.complaint-form button:hover:not(:disabled) {
   background-color: #c0392b;
+  transform: translateY(-2px);
+}
+
+.complaint-form button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.complaint-form .disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.complaint-form .auth-message {
+  text-align: center;
+  color: #dc2626;
+  margin-top: 10px;
+  font-size: 0.9rem;
+}
+
+.complaint-form input:disabled,
+.complaint-form textarea:disabled {
+  background-color: #f3f4f6;
+  cursor: not-allowed;
 }
 
 .complaints-list {

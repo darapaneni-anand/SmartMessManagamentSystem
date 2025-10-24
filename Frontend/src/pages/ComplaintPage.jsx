@@ -1,22 +1,33 @@
 import React, { useEffect, useState } from "react";
-import { getAllComplaints, addComplaint } from "../api/complaintApi";
+import { getAllComplaints, getMyComplaints, addComplaint } from "../api/complaintApi";
+import { useAuth } from "../contexts/AuthContext";
 import "./ComplaintPage.css";
 
 const ComplaintPage = () => {
+  const { user, isAuthenticated, isAdmin, isStaff } = useAuth();
   const [complaints, setComplaints] = useState([]);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const fetchComplaints = async () => {
+    if (!isAuthenticated) {
+      setError("Please login to view complaints");
+      setLoading(false);
+      return;
+    }
+
     try {
-      const res = await getAllComplaints();
+      const res = await (isAdmin() || isStaff() ? getAllComplaints() : getMyComplaints());
       setComplaints(res.data);
       setError(null);
     } catch (err) {
-      setError("Failed to fetch complaints. Please try again later.");
+      setError(err.response?.data?.message || "Failed to fetch complaints. Please try again later.");
       console.error("Error fetching complaints:", err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -31,14 +42,18 @@ const ComplaintPage = () => {
     setError(null);
 
     try {
-      await addComplaint({ user: "Anonymous", title, description });
+      await addComplaint({ title: title.trim(), description: description.trim() });
       setTitle("");
       setDescription("");
       fetchComplaints();
+      setError(null);
       alert("Complaint submitted successfully!");
     } catch (err) {
-      setError("Failed to submit complaint. Please try again.");
       console.error("Error submitting complaint:", err);
+      setError(err.response?.data?.message || "Failed to submit complaint. Please try again.");
+      if (err.response?.status === 401) {
+        setError("Please login to submit a complaint");
+      }
     } finally {
       setSubmitting(false);
     }
@@ -56,10 +71,20 @@ const ComplaintPage = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="complaint-page">
+        <div className="loading">Loading complaints...</div>
+      </div>
+    );
+  }
+
   return (
     <div className="complaint-page">
       <div className="complaint-header">
-        <h1>Submit a Complaint</h1>
+        <h1>
+          {isAdmin() || isStaff() ? "All Complaints" : "My Complaints"}
+        </h1>
       </div>
 
       <div className="complaint-form">
@@ -68,18 +93,27 @@ const ComplaintPage = () => {
             value={title}
             placeholder="Complaint Title"
             onChange={(e) => setTitle(e.target.value)}
+            disabled={!isAuthenticated || submitting}
             required
           />
           <textarea
             value={description}
             placeholder="Describe your complaint in detail..."
             onChange={(e) => setDescription(e.target.value)}
+            disabled={!isAuthenticated || submitting}
             required
           />
           {error && <div className="error-message">{error}</div>}
-          <button type="submit" disabled={submitting}>
+          <button 
+            type="submit" 
+            disabled={submitting || !isAuthenticated}
+            className={!isAuthenticated ? 'disabled' : ''}
+          >
             {submitting ? "Submitting..." : "Submit Complaint"}
           </button>
+          {!isAuthenticated && (
+            <p className="auth-message">Please login to submit a complaint</p>
+          )}
         </form>
       </div>
 

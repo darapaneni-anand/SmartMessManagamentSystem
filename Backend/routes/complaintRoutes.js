@@ -1,10 +1,21 @@
-import express from "express"
+import express from "express";
 import {
-    addComplaint,getAllComplaints,updateComplaintStatus
+    addComplaint,
+    getAllComplaints,
+    getMyComplaints,
+    updateComplaintStatus
 } from "../controllers/complaintController.js";
-const router =  express.Router();
-router.post("/",addComplaint);
-router.get("/",getAllComplaints);
-router.put("/:id",updateComplaintStatus);
+import { auth } from "../middleware/auth.js";
+import { authorize } from "../middleware/auth.js";
 
-export default router
+const router = express.Router();
+
+// Students can submit complaints and view their own
+router.post("/", auth, addComplaint);
+router.get("/mine", auth, getMyComplaints);
+
+// Staff and admin can view all complaints and update status
+router.get("/", auth, authorize('staff', 'admin'), getAllComplaints);
+router.put("/:id", auth, authorize('staff', 'admin'), updateComplaintStatus);
+
+export default router;

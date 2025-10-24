@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getAllComplaints, updateComplaintStatus } from "../api/complaintApi";
-import axios from 'axios';
+import api from '../api/axiosConfig';
 import './AdminDashboard.css';
 
 // Create a Modal component for meal editing
@@ -67,7 +67,7 @@ const AdminDashboard = () => {
   const fetchDashboardData = async () => {
     try {
       const [mealsRes, complaintsRes] = await Promise.all([
-        axios.get('http://localhost:5000/api/meals'),
+        api.get('/meals'),
         getAllComplaints()
       ]);
 
@@ -108,7 +108,7 @@ const AdminDashboard = () => {
     if (window.confirm('Are you sure you want to delete this meal?')) {
       try {
         console.log('Attempting to delete meal id:', mealId);
-        const res = await axios.delete(`http://localhost:5000/api/meals/${mealId}`);
+        const res = await api.delete(`/meals/${mealId}`);
         console.log('Delete response:', res.data);
         fetchDashboardData();
         showMessage(res.data?.message || 'Meal deleted successfully!', 'success');
@@ -125,11 +125,11 @@ const AdminDashboard = () => {
     try {
       if (mealData._id) {
         // Update existing meal
-        await axios.put(`http://localhost:5000/api/meals/${mealData._id}`, mealData);
+        await api.put(`/meals/${mealData._id}`, mealData);
         showMessage('Meal updated successfully!', 'success');
       } else {
         // Create new meal
-        await axios.post('http://localhost:5000/api/meals', mealData);
+        await api.post('/meals', mealData);
         showMessage('New meal added successfully!', 'success');
       }
       setShowModal(false);
@@ -137,7 +137,7 @@ const AdminDashboard = () => {
       fetchDashboardData();
     } catch (error) {
       console.error('Error saving meal:', error);
-      showMessage('Failed to save meal', 'error');
+      showMessage(error.response?.data?.message || 'Failed to save meal', 'error');
     }
   };
 

@@ -29,6 +29,11 @@ const userSchema = new mongoose.Schema({
     enum: ['student', 'staff', 'admin'],
     default: 'student'
   },
+  tokens: [
+    {
+      type: String
+    }
+  ],
   createdAt: {
     type: Date,
     default: Date.now
@@ -61,6 +66,8 @@ userSchema.methods.comparePassword = async function(candidatePassword) {
 userSchema.methods.toJSON = function() {
   const user = this.toObject();
   delete user.password;
+  // do not expose tokens
+  if (user.tokens) delete user.tokens;
   return user;
 };
 

@@ -1,11 +1,9 @@
-import axios from "axios";
-const API_URL = "http://localhost:5000/api/feedback"
+import api from './axiosConfig';
 
-export const getFeedbackByMeal = (mealId)=>
-{
-    return axios.get(`${API_URL}/${mealId}`);
+export const getFeedbackByMeal = (mealId) => {
+    return api.get(`/feedback/${mealId}`);
 };
-export const addFeedback = (data)=>
-{
-    return axios.post(API_URL, data);
+
+export const addFeedback = (data) => {
+    return api.post('/feedback', data);
 };

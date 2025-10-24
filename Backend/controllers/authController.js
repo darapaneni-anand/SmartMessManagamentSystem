@@ -32,6 +32,11 @@ export const register = async (req, res) => {
       { expiresIn: '24h' }
     );
 
+    // store token for logout/session management
+    user.tokens = user.tokens || [];
+    user.tokens.push(token);
+    await user.save();
+
     res.status(201).json({
       message: 'User registered successfully',
       user: user.toJSON(),
@@ -65,6 +70,11 @@ export const login = async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: '24h' }
     );
+
+    // persist token on user for logout
+    user.tokens = user.tokens || [];
+    user.tokens.push(token);
+    await user.save();
 
     res.json({
       message: 'Logged in successfully',
@@ -107,8 +117,10 @@ export const updateProfile = async (req, res) => {
 // Logout user
 export const logout = async (req, res) => {
   try {
-    req.user.tokens = req.user.tokens.filter(token => token !== req.token);
-    await req.user.save();
+    if (Array.isArray(req.user.tokens)) {
+      req.user.tokens = req.user.tokens.filter(t => t !== req.token);
+      await req.user.save();
+    }
     res.json({ message: 'Logged out successfully' });
   } catch (error) {
     res.status(500).json({ message: error.message });

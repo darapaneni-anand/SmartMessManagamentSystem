@@ -6,7 +6,7 @@ import "./Navbar.css";
 const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, logout, isAdmin, isAuthenticated } = useAuth();
+  const { user, logout, isAdmin, isAuthenticated, isStudent, isStaff } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
 
   const handleLogout = async () => {
@@ -30,7 +30,7 @@ const Navbar = () => {
             Home
           </Link>
 
-          {isAuthenticated && (
+          {isAuthenticated && (isStudent() || isStaff()) && (
             <>
               <Link to="/feedback" className={location.pathname === "/feedback" ? "active" : ""}>
                 Feedback

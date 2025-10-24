@@ -42,54 +42,105 @@
   font-size: 1rem;
 }
 
-.feedback-form button {
+.feedback-form input:disabled,
+.feedback-form textarea:disabled {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
+}
+
+.feedback-form .submit-button {
   width: 100%;
   padding: 12px;
   background-color: var(--secondary-color);
   color: white;
   border: none;
   border-radius: var(--border-radius);
-  font-size: 1.1rem;
+  font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-.feedback-form button:hover {
-  background-color: #2980b9;
+.feedback-form .submit-button:hover:not(:disabled) {
+  background-color: var(--secondary-color-dark, #005fa3);
 }
 
-.feedback-form button:disabled {
-  background-color: #bdc3c7;
+.feedback-form .submit-button:disabled {
+  background-color: #cccccc;
   cursor: not-allowed;
 }
 
-.feedback-form .error-message {
-  color: var(--accent-color);
-  background-color: #fde8e8;
-  padding: 10px;
+.feedback-form .submit-button.loading {
+  position: relative;
+  color: transparent;
+}
+
+.feedback-form .submit-button.loading::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  top: 50%;
+  left: 50%;
+  margin: -10px 0 0 -10px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 0.8s infinite linear;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.feedback-error,
+.feedback-success {
+  padding: 12px;
+  margin-bottom: 20px;
   border-radius: var(--border-radius);
-  margin-bottom: 15px;
+  text-align: center;
+  animation: fadeIn 0.3s ease;
 }
 
-.feedback-list {
-  margin-top: 30px;
-  padding: 20px;
+.feedback-error {
+  background-color: #ffebee;
+  color: #c62828;
+  border: 1px solid #ffcdd2;
 }
 
-.feedback-item {
-  background-color: white;
-  padding: 15px;
-  margin-bottom: 15px;
-  border-radius: var(--border-radius);
-  box-shadow: var(--box-shadow);
+.feedback-success {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #c8e6c9;
 }
 
-.feedback-item .rating {
-  font-weight: bold;
-  color: var(--secondary-color);
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-.feedback-item .comment {
+@media (max-width: 768px) {
+  .feedback-form {
+    margin: 10px;
+    padding: 15px;
+  }
+  
+  .feedback-form textarea {
+    min-height: 100px;
+  }
+}
+
+.login-reminder {
   margin-top: 10px;
-  color: #666;
+  color: #ef4444;
+  text-align: center;
+}
+
+.already-submitted {
+  margin-top: 10px;
+  color: #0f172a;
+  background: #f8fafc;
+  padding: 8px;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: 600;
 }
