@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import "./Navbar.css";
+import logo from "../assets/logo.png"; // <-- Add your logo image inside src/assets/
 
 const Navbar = () => {
   const location = useLocation();
@@ -12,19 +13,22 @@ const Navbar = () => {
   const handleLogout = async () => {
     try {
       await logout();
-      navigate('/login');
+      navigate("/login");
     } catch (error) {
-      console.error('Logout failed:', error);
+      console.error("Logout failed:", error);
     }
   };
 
   return (
     <nav className="navbar">
       <div className="navbar-container">
+        {/* Logo + Brand Name */}
         <Link to="/" className="navbar-brand">
-          Smart Mess
+          <img src={logo} alt="Smart Mess Logo" className="navbar-logo" />
+          <span className="brand-text">Smart Mess</span>
         </Link>
 
+        {/* Links */}
         <div className={`navbar-links ${isOpen ? "open" : ""}`}>
           <Link to="/" className={location.pathname === "/" ? "active" : ""}>
             Home

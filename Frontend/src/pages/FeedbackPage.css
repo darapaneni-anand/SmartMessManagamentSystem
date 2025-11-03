@@ -5,6 +5,7 @@
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+    background: var(--background-color);
 }
 
 .feedback-header {
@@ -14,8 +15,28 @@
 
 .feedback-header h1 {
     color: var(--primary-color);
-    font-size: 2.25rem;
-    margin-bottom: 0.25rem;
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.feedback-controls {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.feedback-controls label {
+    font-size: 1rem;
+    color: var(--text-color);
+}
+
+.feedback-controls select {
+    padding: 0.5rem;
+    border: 1px solid #d1d5db;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
 }
 
 .selected-meal {
@@ -121,82 +142,16 @@
 
 .feedback-list {
     margin-top: 2rem;
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 1.5rem;
 }
 
 .feedback-list h2 {
     color: var(--primary-color);
     font-size: 1.5rem;
     margin-bottom: 1.5rem;
-}
-
-.feedback-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.5rem;
-}
-
-.feedback-card {
-    background: white;
-    border-radius: 8px;
-    padding: 1.5rem;
-    box-shadow: var(--box-shadow);
-}
-
-.feedback-rating {
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.feedback-comment {
-    color: #374151;
-    font-size: 0.95rem;
-    line-height: 1.5;
-    margin-bottom: 1rem;
-    font-style: italic;
-}
-
-.feedback-meta {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: #6b7280;
-    font-size: 0.85rem;
-    border-top: 1px solid #e5e7eb;
-    padding-top: 1rem;
-    margin-top: 1rem;
-}
-
-.no-feedback {
-    text-align: center;
-    color: #6b7280;
-    font-style: italic;
-    padding: 2rem;
-    background: white;
-    border-radius: 8px;
-    box-shadow: var(--box-shadow);
-}
-
-/* Responsive adjustments */
-@media (max-width: 640px) {
-    .feedback-page {
-        padding: 1rem;
-    }
-
-    .feedback-header h1 {
-        font-size: 1.75rem;
-    }
-
-    .meals-grid,
-    .feedback-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .meal-card,
-    .feedback-card {
-        padding: 1.25rem;
-    }
 }
 
 .feedback-grid {
@@ -214,6 +169,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    margin-bottom: 1rem;
 }
 
 .feedback-card:hover {
@@ -300,6 +256,17 @@
 
     .feedback-header h1 {
         font-size: 1.9rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .feedback-controls {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .feedback-card {
+        padding: 1rem;
     }
 }
 

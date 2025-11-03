@@ -16,6 +16,7 @@ const FeedbackPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [hasSubmitted, setHasSubmitted] = useState(false);
+  const [sortOption, setSortOption] = useState("newest");
 
   const fetchFeedback = async () => {
     setLoading(true);
@@ -66,6 +67,17 @@ const FeedbackPage = () => {
       setHasSubmitted(false);
     }
   }, [feedbackList, mealId, user]);
+
+  const sortedFeedback = [...feedbackList].sort((a, b) => {
+    if (sortOption === "newest") {
+      return new Date(b.createdAt) - new Date(a.createdAt);
+    } else if (sortOption === "highest") {
+      return b.rating - a.rating;
+    } else if (sortOption === "lowest") {
+      return a.rating - b.rating;
+    }
+    return 0;
+  });
 
   if (loading) {
     return (
@@ -140,12 +152,20 @@ const FeedbackPage = () => {
           />
           
           <div className="feedback-list">
+            <div className="feedback-controls">
+              <label htmlFor="sort">Sort by:</label>
+              <select id="sort" value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
+                <option value="newest">Newest</option>
+                <option value="highest">Highest Rating</option>
+                <option value="lowest">Lowest Rating</option>
+              </select>
+            </div>
             <h2>All Feedback for this Meal</h2>
-            {feedbackList.length === 0 ? (
+            {sortedFeedback.length === 0 ? (
               <p className="no-feedback">No feedback yet. Be the first to share your thoughts!</p>
             ) : (
               <div className="feedback-grid">
-                {feedbackList.map((feedback) => (
+                {sortedFeedback.map((feedback) => (
                   <div key={feedback._id} className="feedback-card">
                     <div className="feedback-rating">
                       <span className="stars">{renderStars(feedback.rating)}</span>
