@@ -1,29 +1,21 @@
-import axios from 'axios';
-
-const API_URL = 'http://localhost:5000/api/auth';
+import api from './axiosConfig';
 
 export const login = (email, password) => {
-  return axios.post(`${API_URL}/login`, { email, password });
+  return api.post('/auth/login', { email, password });
 };
 
 export const register = (userData) => {
-  return axios.post(`${API_URL}/register`, userData);
+  return api.post('/auth/register', userData);
 };
 
 export const getProfile = () => {
-  return axios.get(`${API_URL}/profile`, {
-    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-  });
+  return api.get('/auth/profile');
 };
 
 export const updateProfile = (updates) => {
-  return axios.patch(`${API_URL}/profile`, updates, {
-    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-  });
+  return api.patch('/auth/profile', updates);
 };
 
 export const logout = () => {
-  return axios.post(`${API_URL}/logout`, null, {
-    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-  });
+  return api.post('/auth/logout');
 };

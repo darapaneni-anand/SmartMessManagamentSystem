@@ -248,10 +248,10 @@ const AdminDashboard = () => {
             </thead>
             <tbody>
               {meals.map(meal => (
-                <tr key={meal._id}>
-                  <td>{meal.type}</td>
-                  <td>{Array.isArray(meal.items) ? meal.items.join(", ") : ''}</td>
-                  <td>⭐ {typeof meal.averageRating === 'number' ? meal.averageRating.toFixed(1) : '0.0'}</td>
+          <tr key={meal._id}>
+            <td>{meal.type}</td>
+            <td>{Array.isArray(meal.items) ? meal.items.join(", ") : ''}</td>
+            <td>⭐ {typeof meal.averageRating === 'number' ? Number(meal.averageRating).toFixed(1) : '0.0'}</td>
                   <td className="action-buttons">
                     <button 
                       className="btn-edit"

@@ -5,6 +5,7 @@ import api from "../api/axiosConfig";
 import FeedbackForm from "../components/FeedbackForm";
 import { useAuth } from "../contexts/AuthContext";
 import "./FeedbackPage.css";
+import { formatDate, renderStars, formatRating } from '../utils/format';
 
 const FeedbackPage = () => {
   const { mealId } = useParams();
@@ -69,7 +70,40 @@ const FeedbackPage = () => {
   if (loading) {
     return (
       <div className="feedback-page loading">
-        <div className="loader">Loading...</div>
+        <div className="feedback-header">
+          <h1>Meal Feedback</h1>
+        </div>
+        {mealId ? (
+          <>
+            <div className="selected-meal skeleton">
+              <div className="skeleton-line title" />
+              <div className="skeleton-line items" />
+            </div>
+            <div className="feedback-form skeleton">
+              <div className="skeleton-line" />
+              <div className="skeleton-line" />
+              <div className="skeleton-line short" />
+            </div>
+            <div className="feedback-grid">
+              {Array.from({ length: 3 }).map((_, i) => (
+                <div key={i} className="feedback-card skeleton-card">
+                  <div className="skeleton-line" />
+                  <div className="skeleton-line" />
+                </div>
+              ))}
+            </div>
+          </>
+        ) : (
+          <div className="meals-grid">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="meal-card skeleton-card">
+                <div className="skeleton-line title" />
+                <div className="skeleton-line items" />
+                <div className="skeleton-line short" />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     );
   }
@@ -80,7 +114,11 @@ const FeedbackPage = () => {
     <div className="feedback-page">
       <div className="feedback-header">
         <h1>Meal Feedback</h1>
-        {error && <div className="error-message">{error}</div>}
+        {error && (
+          <div className="error-message" role="alert" aria-live="assertive">
+            {error}
+          </div>
+        )}
       </div>
 
       {mealId ? (
@@ -89,7 +127,7 @@ const FeedbackPage = () => {
             {selectedMeal && (
               <div className="meal-details">
                 <h2>{selectedMeal.type}</h2>
-                <p>{selectedMeal.items.join(', ')}</p>
+                <p>{selectedMeal?.items ? selectedMeal.items.join(', ') : ''}</p>
               </div>
             )}
             <Link to="/feedback" className="back-button">← Back to all meals</Link>
@@ -110,8 +148,8 @@ const FeedbackPage = () => {
                 {feedbackList.map((feedback) => (
                   <div key={feedback._id} className="feedback-card">
                     <div className="feedback-rating">
-                      <span className="stars">{'★'.repeat(feedback.rating)}{'☆'.repeat(5-feedback.rating)}</span>
-                      <span className="rating-text">{feedback.rating}/5</span>
+                      <span className="stars">{renderStars(feedback.rating)}</span>
+                      <span className="rating-text">{formatRating(feedback.rating)}/5</span>
                     </div>
                     {feedback.comment && (
                       <div className="feedback-comment">
@@ -120,10 +158,12 @@ const FeedbackPage = () => {
                     )}
                     <div className="feedback-meta">
                       <span className="feedback-author">
-                        {typeof feedback.user === 'object' ? feedback.user.name : 'Anonymous'}
+                        {feedback.user && typeof feedback.user === 'object'
+                          ? (feedback.user.name || feedback.user.email || 'User')
+                          : 'Anonymous'}
                       </span>
                       <span className="feedback-date">
-                        {new Date(feedback.createdAt).toLocaleDateString()}
+                        {formatDate(feedback.createdAt)}
                       </span>
                     </div>
                   </div>
@@ -141,10 +181,10 @@ const FeedbackPage = () => {
                 <p className="meal-items">{Array.isArray(meal.items) ? meal.items.join(', ') : ''}</p>
                 <div className="meal-stats">
                   <span className="meal-rating">
-                    {meal.averageRating ? (
+                    {typeof meal.averageRating === 'number' ? (
                       <>
-                        <span className="stars">{'★'.repeat(Math.round(meal.averageRating))}{'☆'.repeat(5-Math.round(meal.averageRating))}</span>
-                        <span className="rating-text">{meal.averageRating.toFixed(1)}/5</span>
+                        <span className="stars">{renderStars(meal.averageRating)}</span>
+                        <span className="rating-text">{formatRating(meal.averageRating)}/5</span>
                       </>
                     ) : 'No ratings yet'}
                   </span>

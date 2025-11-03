@@ -222,45 +222,26 @@
 }
 
 .feedback-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 0.75rem;
+    display:flex; gap:12px; align-items:center; margin-bottom:10px;
+}
+
+.avatar {
+    width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,#eef2ff,#fff7ed); color: #0f172a; font-weight:700; font-size:0.95rem; flex-shrink:0;
 }
 
 .feedback-user {
-    font-weight: 600;
-    color: #0f172a;
-    font-size: 0.95rem;
+    font-weight:700; color:#0f172a; font-size:0.98rem;
 }
 
-.feedback-email {
-    color: #64748b;
-    font-size: 0.85rem;
-}
+.feedback-email{ color:#64748b; font-size:0.86rem; }
 
-.feedback-rating {
-    display: inline-block;
-    background: linear-gradient(135deg, rgba(26,42,108,0.08), rgba(178,31,31,0.06));
-    color: var(--secondary-color);
-    padding: 6px 10px;
-    border-radius: 999px;
-    font-size: 0.95rem;
-    font-weight: 700;
-}
+.feedback-rating-pill{ display:inline-flex; align-items:center; gap:8px; background: linear-gradient(90deg, rgba(245,158,11,0.08), rgba(99,102,241,0.04)); color:#92400e; padding:6px 10px; border-radius:999px; font-weight:700; font-size:0.95rem; }
 
-.feedback-comment {
-    color: #334155;
-    margin: 12px 0 14px 0;
-    line-height: 1.6;
-    white-space: pre-wrap;
-}
+.feedback-comment{ color:#334155; margin:12px 0 14px 0; line-height:1.6; white-space:pre-wrap; }
 
-.feedback-date {
-    color: #94a3b8;
-    font-size: 0.85rem;
-    margin-top: auto;
-}
+.feedback-date{ color:#94a3b8; font-size:0.85rem; }
+
+.feedback-card .meta-row{ display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top:8px; }
 
 .loading {
     display: flex;
@@ -335,4 +316,42 @@
     .feedback-card {
         padding: 1rem;
     }
+}
+
+/* Skeleton loaders */
+.skeleton {
+    background: linear-gradient(90deg, rgba(0,0,0,0.03) 25%, rgba(0,0,0,0.04) 50%, rgba(0,0,0,0.03) 75%);
+    border-radius: 8px;
+}
+.skeleton-card {
+    background: #f5f7fa;
+    border-radius: 8px;
+    padding: 1rem;
+}
+.skeleton-line {
+    height: 12px;
+    background: linear-gradient(90deg, #e6e9ee 25%, #f5f7fa 50%, #e6e9ee 75%);
+    border-radius: 6px;
+    margin: 10px 0;
+}
+.skeleton-line.title {
+    height: 18px;
+    width: 60%;
+}
+.skeleton-line.items {
+    height: 12px;
+    width: 90%;
+}
+.skeleton-line.short {
+    width: 40%;
+}
+
+/* small shimmer animation */
+@keyframes shimmer {
+  0% { background-position: -200px 0 }
+  100% { background-position: 200px 0 }
+}
+.skeleton-line, .skeleton-card, .skeleton {
+  background-size: 400px 100%;
+  animation: shimmer 1.2s infinite linear;
 }

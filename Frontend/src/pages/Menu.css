@@ -1,0 +1,6 @@
+.menu-page{ max-width:1200px; margin:2rem auto; padding:1rem; }
+.menu-header{ text-align:center; margin-bottom:1.5rem }
+.menu-header h1{ font-size:2rem; color:var(--primary-color); margin-bottom:0.5rem }
+.menu-grid{ display:grid; grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); gap:1rem }
+.loading{ text-align:center; padding:2rem }
+.error-message{ color:#dc2626; text-align:center }

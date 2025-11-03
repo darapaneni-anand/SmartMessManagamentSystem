@@ -25,17 +25,22 @@
 }
 
 .hero-content {
-  max-width: 800px;
-  text-align: center;
+  max-width: 1100px;
   color: white;
   position: relative;
   z-index: 1;
   padding: 2rem;
-  background: rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(10px);
+  display:flex;
+  gap:1.5rem;
+  align-items:center;
+  justify-content:space-between;
   border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
+
+.hero-content.split{ display:flex; align-items:center; justify-content:space-between; }
+.hero-copy{ max-width:520px }
+.hero-illustration{ display:flex; align-items:center; justify-content:center }
 
 .hero-content h1 {
   font-size: 3.5rem;

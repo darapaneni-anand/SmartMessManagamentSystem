@@ -29,6 +29,9 @@ const Navbar = () => {
           <Link to="/" className={location.pathname === "/" ? "active" : ""}>
             Home
           </Link>
+          <Link to="/menu" className={location.pathname === "/menu" ? "active" : ""}>
+            Menu
+          </Link>
 
           {isAuthenticated && (isStudent() || isStaff()) && (
             <>

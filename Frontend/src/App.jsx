@@ -10,6 +10,7 @@ import Register from "./pages/Register";
 import FeedbackPage from "./pages/FeedbackPage";
 import ComplaintPage from "./pages/ComplaintPage";
 import AdminDashboard from "./pages/AdminDashboard";
+import Menu from "./pages/Menu";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <main className="main-content">
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/menu" element={<Menu />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route 

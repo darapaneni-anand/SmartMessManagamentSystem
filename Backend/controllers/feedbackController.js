@@ -49,19 +49,22 @@ export const addFeedback = async (req, res) => {
     res.status(201).json({ message: "Feedback added successfully " });
   } catch (error) {
     console.error(error);
+    // Handle duplicate key error from unique index
+    if (error.code === 11000) {
+      return res.status(400).json({ message: 'You have already provided feedback for this meal' });
+    }
     res.status(500).json({ message: error.message });
   }
 };
 
-export const getFeedbackByMeal = async(req,res)=>
-{
-    try{
-        const feedback = await Feedback.find({mealId:req.params.mealId});
-        res.json(feedback);
-
-    }
-    catch(error)
-    {
-        res.status(500).json({message:error.message});
-    }
+export const getFeedbackByMeal = async (req, res) => {
+  try {
+    // Populate user name/email for display on frontend and sort by newest
+    const feedback = await Feedback.find({ mealId: req.params.mealId })
+      .populate('user', 'name email')
+      .sort({ createdAt: -1 });
+    res.json(feedback);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };

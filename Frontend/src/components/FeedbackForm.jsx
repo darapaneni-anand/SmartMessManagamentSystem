@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { addFeedback } from "../api/feedbackApi";
 import { useAuth } from "../contexts/AuthContext";
 import "./FeedbackForm.css";
+import StarRating from './StarRating';
 
 const FeedbackForm = ({ mealId, onFeedbackSubmitted, alreadySubmitted = false }) => {
   const [rating, setRating] = useState(5);
@@ -11,7 +12,7 @@ const FeedbackForm = ({ mealId, onFeedbackSubmitted, alreadySubmitted = false })
   const [loading, setLoading] = useState(false);
   const { isAuthenticated } = useAuth();
 
-  // Show error for 5 seconds
+  
   const showError = (message) => {
     setError(message);
     setTimeout(() => setError(""), 5000);
@@ -83,44 +84,61 @@ const FeedbackForm = ({ mealId, onFeedbackSubmitted, alreadySubmitted = false })
 
   return (
     <div className="feedback-form-container">
-      <form onSubmit={handleSubmit} className="feedback-form">
-        {error && <div className="feedback-error">{error}</div>}
-        {success && <div className="feedback-success">{success}</div>}
-
-        <div className="form-group">
-          <label htmlFor="rating">Rating:</label>
-          <input
-            id="rating"
-            type="number"
-            value={rating}
-            onChange={(e) =>
-              setRating(Math.min(5, Math.max(1, Number(e.target.value))))
-            }
-            min="1"
-            max="5"
-            disabled={loading}
-            required
-          />
+      <form
+        onSubmit={handleSubmit}
+        className="feedback-form card"
+        aria-busy={loading}
+        aria-live="polite"
+      >
+        <div className="form-header">
+          <div>
+            <h3>Share your experience</h3>
+            <p className="muted">Rate this meal and leave a short comment</p>
+          </div>
+          <div className="rating-preview">
+            <StarRating value={rating} onChange={(v) => setRating(v)} />
+          </div>
         </div>
 
-        <div className="form-group">
-          <label htmlFor="comment">Comment:</label>
+        {error && (
+          <div className="feedback-error" role="alert" aria-live="assertive">
+            {error}
+          </div>
+        )}
+        {success && (
+          <div className="feedback-success" role="status" aria-live="polite">
+            {success}
+          </div>
+        )}
+
+        <div className="form-body">
+          <label htmlFor="comment" className="sr-only">Comment</label>
           <textarea
             id="comment"
+            name="comment"
             value={comment}
             onChange={(e) => setComment(e.target.value)}
             disabled={loading}
-            placeholder="Share your thoughts about this meal..."
+            aria-disabled={loading}
+            placeholder="Share your thoughts about this meal... (optional)"
+            maxLength={600}
+            className="comment-box"
           />
-        </div>
 
-        <button
-          type="submit"
-          disabled={loading || !isAuthenticated || alreadySubmitted}
-          className={`submit-button ${loading ? "loading" : ""}`}
-        >
-          {loading ? "Submitting..." : "Submit Feedback"}
-        </button>
+          <div className="form-row">
+            <div className="char-count">{comment.length}/600</div>
+            <div className="form-actions">
+              <button
+                type="submit"
+                disabled={loading || !isAuthenticated || alreadySubmitted}
+                className={`submit-button ${loading ? "loading" : ""}`}
+                aria-disabled={loading || !isAuthenticated || alreadySubmitted}
+              >
+                {loading ? "Submitting..." : "Submit Feedback"}
+              </button>
+            </div>
+          </div>
+        </div>
 
         {!isAuthenticated && (
           <p className="login-reminder">Please login to submit feedback</p>
