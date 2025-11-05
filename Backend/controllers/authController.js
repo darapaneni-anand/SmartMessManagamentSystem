@@ -98,7 +98,7 @@ export const getProfile = async (req, res) => {
 // Update user profile
 export const updateProfile = async (req, res) => {
   const updates = Object.keys(req.body);
-  const allowedUpdates = ['firstName', 'lastName', 'password', 'preferences'];
+  const allowedUpdates = ['name', 'password'];
   const isValidOperation = updates.every(update => allowedUpdates.includes(update));
 
   if (!isValidOperation) {
@@ -106,7 +106,17 @@ export const updateProfile = async (req, res) => {
   }
 
   try {
-    updates.forEach(update => req.user[update] = req.body[update]);
+    updates.forEach(update => {
+      if (update === 'name') {
+        req.user.name = req.body.name;
+      }
+      if (update === 'password') {
+        if (typeof req.body.password !== 'string' || req.body.password.length < 6) {
+          throw new Error('Password must be at least 6 characters long');
+        }
+        req.user.password = req.body.password;
+      }
+    });
     await req.user.save();
     res.json(req.user.toJSON());
   } catch (error) {

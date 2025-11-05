@@ -7,41 +7,29 @@ dotenv.config();
 const seedAdmin = async () => {
   try {
     if (!process.env.MONGO_URI) {
-      console.error('MONGODB_URI not set');
+      console.error('MONGO_URI not set');
+      process.exit(1);
+    }
+
+    const { ADMIN_EMAIL, ADMIN_USERNAME, ADMIN_PASSWORD } = process.env;
+    if (!ADMIN_EMAIL || !ADMIN_USERNAME || !ADMIN_PASSWORD) {
+      console.error('ADMIN_EMAIL, ADMIN_USERNAME, and ADMIN_PASSWORD must be set');
       process.exit(1);
     }
 
     await mongoose.connect(process.env.MONGO_URI);
     console.log('Connected to MongoDB');
 
-    const adminEmail = process.env.ADMIN_EMAIL || 'anandteja38@gmail.com';
+    const adminEmail = ADMIN_EMAIL;
     const existing = await User.findOne({ email: adminEmail });
     if (existing) {
       console.log('Admin already exists');
       process.exit(0);
     }
-const fetchComplaints = async () => {
-  if (!isAuthenticated) {
-    setError("Please login to view complaints");
-    setLoading(false);
-    return;
-  }
-
-  try {
-    const res = await (isAdmin() || isStaff() ? getAllComplaints() : getMyComplaints());
-    setComplaints(res.data);
-    setError(null);
-  } catch (err) {
-    setError(err.response?.data?.message || "Failed to fetch complaints. Please try again later.");
-    console.error("Error fetching complaints:", err);
-  } finally {
-    setLoading(false);
-  }
-};
     const admin = new User({
-      username: process.env.ADMIN_USERNAME || 'Anand',
+      username: ADMIN_USERNAME,
       email: adminEmail,
-      password: process.env.ADMIN_PASSWORD || 'Anand@2004',
+      password: ADMIN_PASSWORD,
       name: 'System Administrator',
       role: 'admin'
     });

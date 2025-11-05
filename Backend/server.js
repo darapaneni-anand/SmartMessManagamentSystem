@@ -23,7 +23,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/meals", mealRoutes);
 app.use("/api/complaints", complaintRoutes);
 app.use("/api/feedback", feedbackRoutes);
-app.get("/",(req,res)=> res.send("Mess Mnagement API is Running"));
+app.get("/",(req,res)=> res.send("Mess Management API is Running"));
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT,() => console.log(`Server running on port ${PORT}`));

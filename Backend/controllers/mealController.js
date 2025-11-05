@@ -18,7 +18,7 @@ export const addMeal = async(req,res)=>
 
     }catch(err)
     {
-        res.status(400).json({mesaage:err.message});
+        res.status(400).json({message:err.message});
     }
 };
 

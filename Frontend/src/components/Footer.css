@@ -1,5 +1,5 @@
 .footer {
-  background: linear-gradient(to right, #1a1a1a, #2c3e50);
+  background: linear-gradient(135deg, #0f172a, #1f2937);
   color: #fff;
   padding: 4rem 2rem 2rem;
   margin-top: 4rem;
@@ -14,17 +14,9 @@
   margin-bottom: 2rem;
 }
 
-.footer-section h3 {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-  color: #3498db;
-}
+.footer-section h3 { font-size: 1.5rem; margin-bottom: 1rem; color: #93c5fd; }
 
-.footer-section h4 {
-  font-size: 1.2rem;
-  margin-bottom: 1rem;
-  color: #3498db;
-}
+.footer-section h4 { font-size: 1.2rem; margin-bottom: 1rem; color: #93c5fd; }
 
 .footer-section p {
   color: #ccc;
@@ -46,9 +38,7 @@
   transition: color 0.3s ease;
 }
 
-.footer-section ul li a:hover {
-  color: #3498db;
-}
+.footer-section ul li a:hover { color: #bfdbfe; }
 
 .footer-bottom {
   text-align: center;

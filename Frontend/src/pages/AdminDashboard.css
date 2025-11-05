@@ -1,26 +1,33 @@
 .admin-dashboard {
   width: 100%;
   min-height: calc(100vh - 64px); /* Subtract navbar height */
-  background: linear-gradient(135deg, #f6f8fb 0%, #f1f4f9 100%);
+  background:
+    radial-gradient(1000px 360px at -10% 0%, rgba(99,102,241,0.10), transparent 60%),
+    radial-gradient(1000px 360px at 110% 10%, rgba(59,130,246,0.10), transparent 60%),
+    linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%);
   padding: 2rem;
 }
 
 .admin-header {
-  text-align: center;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 12px;
   margin-bottom: 2.5rem;
-  padding: 1rem;
-  background: var(--gradient-primary);
-  border-radius: 15px;
-  box-shadow: var(--box-shadow);
+  padding: 1.25rem 1.5rem;
+  background: rgba(255,255,255,0.6);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+  border: 1px solid rgba(15,23,42,0.06);
+  backdrop-filter: blur(6px);
 }
 
 .admin-header h1 {
-  color: white;
-  font-size: 2.5rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  color: #0f172a;
+  font-size: 1.75rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 0;
 }
 
 .dashboard-grid {
@@ -32,11 +39,12 @@
 }
 
 .dashboard-card {
-  background: white;
-  border-radius: 15px;
-  padding: 1.5rem;
-  box-shadow: var(--box-shadow);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: linear-gradient(180deg, rgba(255,255,255,0.82), rgba(255,255,255,0.92));
+  border-radius: 16px;
+  padding: 1.25rem 1.25rem 1rem;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+  border: 1px solid rgba(15,23,42,0.06);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .dashboard-card:hover {
@@ -46,8 +54,8 @@
 
 .stats-card {
   text-align: center;
-  background: white;
-  padding: 2rem;
+  background: transparent;
+  padding: 1.75rem 1.25rem;
   position: relative;
   overflow: hidden;
 }
@@ -59,27 +67,14 @@
   left: 0;
   width: 100%;
   height: 4px;
-  background: var(--gradient-secondary);
+  background: linear-gradient(135deg, #3b82f6, #6366f1);
 }
 
-.stats-card h2 {
-  color: var(--primary-color);
-  font-size: 1.25rem;
-  margin-bottom: 1rem;
-}
+.stats-card h2 { color: #0f172a; font-size: 1rem; margin-bottom: 0.75rem; font-weight: 700 }
 
-.stats-card .stat-value {
-  font-size: 3rem;
-  font-weight: 700;
-  color: var(--secondary-color);
-  margin: 1rem 0;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-}
+.stats-card .stat-value { font-size: 2.4rem; font-weight: 800; color: #111827; margin: 0.25rem 0 0.5rem }
 
-.stats-card .stat-label {
-  color: #666;
-  font-size: 1.1rem;
-}
+.stats-card .stat-label { color: #64748b; font-size: 0.95rem }
 
 .action-buttons {
   display: flex;
@@ -88,20 +83,24 @@
 }
 
 .btn-edit {
-  background-color: var(--secondary-color);
+  background: linear-gradient(135deg, #10b981, #34d399);
+  color: #fff;
 }
 
 .btn-delete {
-  background-color: var(--accent-color);
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: #fff;
 }
 
 .table-container {
-  background: white;
-  border-radius: 15px;
+  background: rgba(255,255,255,0.7);
+  border-radius: 16px;
   overflow: hidden;
   width: 100%;
   margin-top: 1rem;
-  box-shadow: var(--box-shadow);
+  box-shadow: 0 8px 26px rgba(15,23,42,0.08);
+  border: 1px solid rgba(15,23,42,0.06);
+  backdrop-filter: blur(4px);
 }
 
 .admin-table {
@@ -111,14 +110,12 @@
 }
 
 .admin-table th {
-  background: var(--gradient-primary);
+  background: linear-gradient(135deg, #3b82f6, #6366f1);
   color: white;
-  padding: 1rem;
+  padding: 0.9rem 1rem;
   text-align: left;
-  font-weight: 600;
-  text-transform: uppercase;
+  font-weight: 700;
   font-size: 0.9rem;
-  letter-spacing: 1px;
 }
 
 .admin-table td {
@@ -131,10 +128,7 @@
   transition: all 0.3s ease;
 }
 
-.admin-table tbody tr:hover {
-  background-color: #f8f9fa;
-  transform: scale(1.01);
-}
+.admin-table tbody tr:hover { background-color: #f8fafc; }
 
 .admin-table tbody tr:hover td {
   color: var(--secondary-color);
@@ -148,9 +142,11 @@
 .btn-edit, .btn-delete {
   padding: 0.5rem 1rem;
   font-size: 0.9rem;
-  border-radius: 8px;
-  transition: all 0.3s ease;
+  border-radius: 10px;
+  transition: transform .15s ease, filter .15s ease;
+  border: none;
 }
+.btn-edit:hover, .btn-delete:hover { transform: translateY(-1px); filter: brightness(0.96) }
 
 .btn-edit {
   background: var(--gradient-secondary);
@@ -189,6 +185,24 @@
   padding: 5px 10px;
   font-size: 0.9rem;
 }
+
+/* Modal */
+.modal-overlay{
+  position: fixed; inset:0; background: rgba(15,23,42,0.45);
+  display:flex; align-items:center; justify-content:center; z-index: 1000;
+}
+.modal-content{
+  width: min(560px, 92vw);
+  background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.96));
+  border: 1px solid rgba(15,23,42,0.08);
+  border-radius: 16px;
+  box-shadow: 0 20px 50px rgba(15,23,42,0.25);
+  padding: 20px;
+}
+.modal-content h2{ margin-top:0; color:#0f172a }
+.modal-actions{ display:flex; gap:10px; justify-content:flex-end }
+.btn-save{ background: linear-gradient(135deg, #3b82f6, #6366f1); color:white; border:none; padding:10px 14px; border-radius:10px; font-weight:700; cursor:pointer }
+.btn-cancel{ background: #e5e7eb; color:#0f172a; border:none; padding:10px 14px; border-radius:10px; font-weight:600; cursor:pointer }
 
 /* Responsive Design */
 @media (max-width: 1200px) {

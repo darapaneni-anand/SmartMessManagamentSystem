@@ -4,7 +4,14 @@
 }
 
 .hero-section {
-  background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+  --g1: rgba(59,130,246,0.25);
+  --g2: rgba(99,102,241,0.22);
+  --g3: rgba(253,186,116,0.22);
+  background:
+    radial-gradient(800px 320px at 10% 10%, var(--g1), transparent 60%),
+    radial-gradient(900px 360px at 90% 0%, var(--g2), transparent 60%),
+    radial-gradient(700px 280px at 50% 100%, var(--g3), transparent 60%),
+    linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%);
   min-height: 80vh;
   display: flex;
   align-items: center;
@@ -17,16 +24,21 @@
 .hero-section::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: radial-gradient(circle at center, rgba(0,0,0,0) 0%, rgba(0,0,0,0.4) 100%);
+  inset: 0;
+  background:
+    radial-gradient(1200px 400px at 0% -10%, rgba(59,130,246,0.15), transparent 60%),
+    radial-gradient(1200px 400px at 110% 10%, rgba(99,102,241,0.12), transparent 60%);
+  animation: floatGradient 14s ease-in-out infinite alternate;
+}
+
+@keyframes floatGradient {
+  0% { transform: translateY(0px) scale(1); opacity: 1; }
+  100% { transform: translateY(-16px) scale(1.02); opacity: 0.95; }
 }
 
 .hero-content {
   max-width: 1100px;
-  color: white;
+  color: #0f172a;
   position: relative;
   z-index: 1;
   padding: 2rem;
@@ -35,7 +47,9 @@
   align-items:center;
   justify-content:space-between;
   border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  background: rgba(255,255,255,0.65);
+  backdrop-filter: blur(6px);
 }
 
 .hero-content.split{ display:flex; align-items:center; justify-content:space-between; }
@@ -46,14 +60,14 @@
   font-size: 3.5rem;
   margin-bottom: 1.5rem;
   font-weight: 700;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  letter-spacing: -0.02em;
 }
 
 .hero-description {
   font-size: 1.2rem;
   margin-bottom: 2rem;
   line-height: 1.6;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+  color: #334155;
 }
 
 .hero-buttons {
@@ -72,30 +86,18 @@
   letter-spacing: 1px;
 }
 
-.hero-button.primary {
-  background: #3498db;
-  color: white;
-  border: none;
-}
+.hero-button.primary { background: linear-gradient(135deg, #3b82f6, #6366f1); color: white; border: none; }
 
-.hero-button.secondary {
-  background: transparent;
-  color: white;
-  border: 2px solid white;
-}
+.hero-button.secondary { background: white; color: #1f2937; border: 2px solid #e5e7eb; }
 
 .hero-button:hover {
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
-.hero-button.primary:hover {
-  background: #2980b9;
-}
+.hero-button.primary:hover { filter: brightness(0.95); }
 
-.hero-button.secondary:hover {
-  background: rgba(255,255,255,0.1);
-}
+.hero-button.secondary:hover { background: #f8fafc; }
 
 .meals-container {
   display: grid;
@@ -109,7 +111,7 @@
 .section-title {
   text-align: center;
   font-size: 2.5rem;
-  color: #2c3e50;
+  color: #0f172a;
   margin: 3rem 0;
   font-weight: 700;
   position: relative;
@@ -124,9 +126,18 @@
   transform: translateX(-50%);
   width: 100px;
   height: 4px;
-  background: linear-gradient(to right, #3498db, #2c3e50);
+  background: linear-gradient(to right, #3b82f6, #6366f1);
   border-radius: 2px;
 }
+
+/* (removed Your Experience section styles) */
+
+/* Team */
+.team-section{ margin-top: 32px; }
+.team-grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:16px }
+.team-card{ text-align:center }
+.team-card .avatar{ width:64px; height:64px; margin:0 auto 10px; border-radius:50%; background: linear-gradient(135deg, #60a5fa, #c7d2fe) }
+.team-card .role{ color:#475569; font-weight:600; margin:4px 0 6px }
 
 @media (max-width: 768px) {
   .hero-content h1 {
