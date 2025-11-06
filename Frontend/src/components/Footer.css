@@ -1,25 +1,38 @@
+/* Clean Modern Footer with Gradient */
+
 .footer {
-  background: linear-gradient(135deg, #0f172a, #1f2937);
-  color: #fff;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.95) 0%, rgba(99, 102, 241, 0.95) 100%);
+  color: rgba(255, 255, 255, 0.9);
   padding: 4rem 2rem 2rem;
   margin-top: 4rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .footer-content {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
+  gap: 3rem;
   margin-bottom: 2rem;
 }
 
-.footer-section h3 { font-size: 1.5rem; margin-bottom: 1rem; color: #93c5fd; }
+.footer-section h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: white;
+  font-weight: 700;
+}
 
-.footer-section h4 { font-size: 1.2rem; margin-bottom: 1rem; color: #93c5fd; }
+.footer-section h4 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: white;
+  font-weight: 600;
+}
 
 .footer-section p {
-  color: #ccc;
+  color: rgba(255, 255, 255, 0.8);
   line-height: 1.6;
 }
 
@@ -29,16 +42,21 @@
 }
 
 .footer-section ul li {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.8rem;
 }
 
 .footer-section ul li a {
-  color: #ccc;
+  color: rgba(255, 255, 255, 0.8);
   text-decoration: none;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
+  display: inline-block;
+  padding: 0.25rem 0;
 }
 
-.footer-section ul li a:hover { color: #bfdbfe; }
+.footer-section ul li a:hover {
+  color: white;
+  transform: translateX(3px);
+}
 
 .footer-bottom {
   text-align: center;
@@ -47,18 +65,19 @@
 }
 
 .footer-bottom p {
-  color: #888;
+  color: rgba(255, 255, 255, 0.7);
   font-size: 0.9rem;
 }
 
 @media (max-width: 768px) {
   .footer {
-    padding: 3rem 1rem 1.5rem;
+    padding: 3rem 1.5rem 1.5rem;
   }
   
   .footer-content {
     grid-template-columns: 1fr;
     text-align: center;
+    gap: 2rem;
   }
   
   .footer-section {

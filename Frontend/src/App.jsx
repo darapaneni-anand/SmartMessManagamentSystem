@@ -1,5 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { AuthProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Navbar from "./components/Navbar";
@@ -11,6 +13,7 @@ import FeedbackPage from "./pages/FeedbackPage";
 import ComplaintPage from "./pages/ComplaintPage";
 import AdminDashboard from "./pages/AdminDashboard";
 import Menu from "./pages/Menu";
+import "./App.css"; // (Optional) for consistent background + layout padding
 
 function App() {
   return (
@@ -18,47 +21,68 @@ function App() {
       <Router>
         <div className="app-container">
           <Navbar />
+
+          {/* Main App Content */}
           <main className="main-content">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/menu" element={<Menu />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
-              <Route 
-                path="/feedback" 
+
+              {/* Feedback Routes */}
+              <Route
+                path="/feedback"
                 element={
-                  <ProtectedRoute roles={['student', 'staff']}>
+                  <ProtectedRoute roles={["student", "staff"]}>
                     <FeedbackPage />
                   </ProtectedRoute>
-                } 
+                }
               />
-              <Route 
-                path="/feedback/:mealId" 
+              <Route
+                path="/feedback/:mealId"
                 element={
-                  <ProtectedRoute roles={['student', 'staff']}>
+                  <ProtectedRoute roles={["student", "staff"]}>
                     <FeedbackPage />
                   </ProtectedRoute>
-                } 
+                }
               />
-              <Route 
-                path="/complaints" 
+
+              {/* Complaint Page */}
+              <Route
+                path="/complaints"
                 element={
-                  <ProtectedRoute roles={['student', 'staff']}>
+                  <ProtectedRoute roles={["student", "staff"]}>
                     <ComplaintPage />
                   </ProtectedRoute>
-                } 
+                }
               />
-              <Route 
-                path="/admin" 
+
+              {/* Admin Dashboard */}
+              <Route
+                path="/admin"
                 element={
-                  <ProtectedRoute roles={['admin']}>
+                  <ProtectedRoute roles={["admin"]}>
                     <AdminDashboard />
                   </ProtectedRoute>
-                } 
+                }
               />
             </Routes>
           </main>
+
           <Footer />
+
+          {/* Toast Notifications */}
+          <ToastContainer
+            position="top-center"
+            autoClose={2500}
+            hideProgressBar
+            closeOnClick
+            pauseOnHover
+            draggable={false}
+            theme="light"
+            toastClassName="custom-toast"
+          />
         </div>
       </Router>
     </AuthProvider>

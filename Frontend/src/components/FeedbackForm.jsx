@@ -1,103 +1,83 @@
 import React, { useState } from "react";
 import { addFeedback } from "../api/feedbackApi";
 import { useAuth } from "../contexts/AuthContext";
-import "./FeedbackForm.css";
-import StarRating from './StarRating';
+import { toast } from "react-toastify";
+import StarRating from "./StarRating";
 
-const FeedbackForm = ({ mealId, onFeedbackSubmitted }) => {
+const FeedbackForm = ({ mealId, onFeedbackSubmitted, alreadySubmitted, accent = "blue" }) => {
+  const { isAuthenticated } = useAuth();
+
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState("");
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
-  const [loading, setLoading] = useState(false);
-  const { isAuthenticated } = useAuth();
+  const [submitting, setSubmitting] = useState(false);
+  const [err, setErr] = useState("");
+
+  const primaryColor = accent === "blue" ? "#2563EB" : "#4F46E5";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!isAuthenticated) return setErr("Please login to submit feedback.");
+    if (!mealId) return setErr("No meal selected.");
+    if (!rating || rating < 1 || rating > 5) return setErr("Rating must be 1–5.");
+    if (comment.trim().length < 3) return setErr("Please add a brief comment (min 3 chars).");
 
-    if (!isAuthenticated) {
-      setError("Please login to submit feedback");
-      return;
-    }
-
-    if (!mealId) {
-      setError("No meal selected. Please choose a meal first.");
-      return;
-    }
-
-    const numericRating = Number(rating);
-    if (Number.isNaN(numericRating) || numericRating < 1 || numericRating > 5) {
-      setError("Rating must be between 1 and 5");
-      return;
-    }
-
-    setError("");
-    setSuccess("");
-    setLoading(true);
-
+    setErr("");
+    setSubmitting(true);
     try {
-      const res = await addFeedback({
-        mealId,
-        rating: numericRating,
-        comment: comment.trim(),
-      });
-
-      setSuccess(res?.data?.message || "Feedback submitted successfully!");
+      await addFeedback({ mealId, rating: Number(rating), comment: comment.trim() });
       setComment("");
       setRating(5);
-
-      if (onFeedbackSubmitted) onFeedbackSubmitted();
-
-      setTimeout(() => setSuccess(""), 3000);
-    } catch (err) {
-      console.error("Error submitting feedback:", err);
-      setError(err.response?.data?.message || "Error submitting feedback");
+      toast.success("Feedback submitted. Thank you!");
+      onFeedbackSubmitted?.();
+    } catch (e2) {
+      const msg = e2?.response?.data?.message || "Error submitting feedback";
+      setErr(msg);
+      toast.error(msg);
     } finally {
-      setLoading(false);
+      setSubmitting(false);
     }
   };
 
   return (
-    <div className="feedback-form-container">
-      <form
-        onSubmit={handleSubmit}
-        className="feedback-form card"
-        aria-busy={loading}
-        aria-live="polite"
-      >
-        <div className="form-header">
-          <h3>Share Your Feedback</h3>
-          <StarRating value={rating} onChange={(v) => setRating(v)} />
-        </div>
+    <section className="fp-card">
+      <div className="fp-form-head">
+        <h3>Share your feedback</h3>
+        <StarRating value={rating} onChange={setRating} />
+      </div>
 
-        {error && (
-          <div className="feedback-error" role="alert">
-            {error}
-          </div>
-        )}
-        {success && (
-          <div className="feedback-success" role="status">
-            {success}
-          </div>
-        )}
+      {alreadySubmitted && (
+        <div className="fp-note">You’ve already submitted feedback for this meal.</div>
+      )}
 
+      {err && <div className="fp-alert">{err}</div>}
+
+      <form onSubmit={handleSubmit} className="fp-form">
+        <label htmlFor="comment" className="fp-label">
+          Comment
+        </label>
         <textarea
+          id="comment"
           value={comment}
           onChange={(e) => setComment(e.target.value)}
-          placeholder="Write your feedback here..."
+          placeholder="Write your feedback..."
           maxLength={500}
-          className="feedback-comment"
+          className="fp-textarea"
+          disabled={submitting}
         />
 
-        <button
-          type="submit"
-          disabled={loading}
-          className={`submit-button ${loading ? "loading" : ""}`}
-        >
-          {loading ? "Submitting..." : "Submit Feedback"}
-        </button>
+        <div className="fp-row">
+          <span className="fp-muted">{comment.length}/500</span>
+          <button
+            type="submit"
+            disabled={submitting || alreadySubmitted || !isAuthenticated}
+            className="fp-btn"
+            style={{ backgroundColor: primaryColor }}
+          >
+            {submitting ? "Submitting..." : "Submit feedback"}
+          </button>
+        </div>
       </form>
-    </div>
+    </section>
   );
 };
 

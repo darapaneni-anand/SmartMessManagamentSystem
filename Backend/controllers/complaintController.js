@@ -1,57 +1,58 @@
 import Complaint from "../models/Complaint.js";
+import { asyncHandler, sendSuccess, sendError, sendCreated, sendNotFound } from "../utils/response.js";
 
-// Add new complaint
-export const addComplaint = async (req, res) => {
-  try {
-    const { title, description } = req.body;
-    const complaint = new Complaint({
-      user: req.user._id, // Use authenticated user's ID
-      title,
-      description
-    });
-    await complaint.save();
-    res.status(201).json({ message: "Complaint submitted successfully", complaint });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
+export const addComplaint = asyncHandler(async (req, res) => {
+  const { title, description } = req.body;
 
-// Get all complaints (for staff/admin)
-export const getAllComplaints = async (req, res) => {
-  try {
-    const complaints = await Complaint.find()
-      .populate('user', 'name email') // Include user details
-      .sort({ createdAt: -1 });
-    res.json(complaints);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+  if (!title || !description) {
+    return sendError(res, "Title and description are required", 400);
   }
-};
 
-// Get user's own complaints (for students)
-export const getMyComplaints = async (req, res) => {
-  try {
-    const complaints = await Complaint.find({ user: req.user._id })
-      .sort({ createdAt: -1 });
-    res.json(complaints);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+  const complaint = new Complaint({
+    user: req.user._id,
+    title: title.trim(),
+    description: description.trim()
+  });
+
+  await complaint.save();
+  sendCreated(res, complaint, "Complaint submitted successfully");
+});
+
+export const getAllComplaints = asyncHandler(async (req, res) => {
+  const complaints = await Complaint.find()
+    .populate('user', 'name email')
+    .sort({ createdAt: -1 });
+  sendSuccess(res, complaints);
+});
+
+export const getMyComplaints = asyncHandler(async (req, res) => {
+  const complaints = await Complaint.find({ user: req.user._id })
+    .sort({ createdAt: -1 });
+  sendSuccess(res, complaints);
+});
+
+export const updateComplaintStatus = asyncHandler(async (req, res) => {
+  const { status } = req.body;
+  const { id } = req.params;
+
+  if (!status) {
+    return sendError(res, "Status is required", 400);
   }
-};
-export const updateComplaintStatus = async(req,res)=>
-{
-    try{
-        const{status} = req.body;
-        const complaint = await Complaint.findByIdAndUpdate(
-            req.params.id,
-            { status },
-            { new: true }
-        );
-        if (!complaint) return res.status(404).json({ message: 'Complaint not found' });
-        res.json(complaint);
-    }
-    catch(error)
-    {
-        res.status(500).json({ message: error.message });
-    }
-}
+
+  const validStatuses = ['Pending', 'Processing', 'Resolved'];
+  if (!validStatuses.includes(status)) {
+    return sendError(res, `Status must be one of: ${validStatuses.join(', ')}`, 400);
+  }
+
+  const complaint = await Complaint.findByIdAndUpdate(
+    id,
+    { status },
+    { new: true, runValidators: true }
+  );
+
+  if (!complaint) {
+    return sendNotFound(res, 'Complaint not found');
+  }
+
+  sendSuccess(res, complaint, 'Complaint status updated successfully');
+});
