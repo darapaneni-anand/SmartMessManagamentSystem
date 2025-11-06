@@ -58,11 +58,13 @@ app.get("/", (req, res) => {
 if (process.env.NODE_ENV === 'production') {
   const buildPath = path.join(__dirname, '../Frontend/dist');
   app.use(express.static(buildPath));
-  
-  app.get('/*', (req, res) => {
+
+  // Express v5 wildcard fix
+  app.get(/^(?!\/api).*/, (req, res) => {
     res.sendFile(path.join(buildPath, 'index.html'));
   });
 }
+
 
 // Error handling middleware (must be last)
 app.use(notFound);
