@@ -1,8 +1,13 @@
 import axios from 'axios';
 
 // Get API base URL from environment variable or fallback to localhost
-const BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
-const API_BASE_URL = BASE.endsWith('/api') ? BASE : `${BASE}/api`;
+let BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+
+// ✅ Remove trailing slash (important!)
+BASE = BASE.replace(/\/+$/, ""); 
+
+const API_BASE_URL = `${BASE}/api`;
+
 
 
 const api = axios.create({
