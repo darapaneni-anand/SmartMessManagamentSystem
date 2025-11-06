@@ -122,13 +122,13 @@ const Home = () => {
           </div>
           <div className="team-card card">
             <div className="avatar" aria-hidden />
-            <h4>Design Partner</h4>
+            <h4>Anand Teja</h4>
             <p className="role">Product Design</p>
             <p className="text-muted">UX flows, visual system, polish</p>
           </div>
           <div className="team-card card">
             <div className="avatar" aria-hidden />
-            <h4>Frontend Partner</h4>
+            <h4>Anand Teja</h4>
             <p className="role">Frontend Engineer</p>
             <p className="text-muted">Components, states, responsiveness</p>
           </div>
